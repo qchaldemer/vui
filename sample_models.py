@@ -155,7 +155,7 @@ def final_model(input_dim, units, recur_layers, filters, kernel_size, conv_strid
     
     for layer in range(recur_layers):
         bidir_rnn = Bidirectional(GRU(units, return_sequences=True, implementation=2,
-                        name='bidir_rnn_' + str(layer)), merge_mode='concat')(input_)
+                        name='bidir_rnn_' + str(layer), dropout_W=0, dropout_U=0.3), merge_mode='concat')(input_)
         bn_cnn = BatchNormalization(name='bn_bidir_rnn_'+str(layer))(bidir_rnn)
         input_ = bn_cnn
     
