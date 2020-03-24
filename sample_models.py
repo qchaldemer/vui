@@ -133,7 +133,7 @@ def bidirectional_rnn_model(input_dim, units, output_dim=29):
     return model
 
 def final_model(input_dim=161, units=200, recur_layers=2, filters=200, kernel_size=11, conv_stride=2, 
-               conv_border_mode='valid', output_dim=29):
+               conv_border_mode='valid', output_dim=29, dropout_W=0, dropout_U=0):
     """ Build a deep network for speech 
     """
     # Main acoustic input
@@ -155,7 +155,7 @@ def final_model(input_dim=161, units=200, recur_layers=2, filters=200, kernel_si
     
     for layer in range(recur_layers):
         bidir_rnn = Bidirectional(GRU(units, return_sequences=True, implementation=2,
-                        name='bidir_rnn_' + str(layer), dropout_W=0, dropout_U=0.3), merge_mode='concat')(input_)
+                        name='bidir_rnn_' + str(layer), dropout_W=dropout_W, dropout_U=dropout_U), merge_mode='concat')(input_)
         bn_cnn = BatchNormalization(name='bn_bidir_rnn_'+str(layer))(bidir_rnn)
         input_ = bn_cnn
     
